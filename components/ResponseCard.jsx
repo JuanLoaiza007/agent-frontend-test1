@@ -158,47 +158,48 @@ export function ResponseCard({ response, isLoading = false }) {
             </div>
           </>
         )}
-
-        {/* Botones de acción */}
-        {response.action_links && response.action_links.length > 0 && (
-          <>
-            <Separator />
-            <div>
-              <h4 className="text-sm font-medium text-muted-foreground mb-2">
-                Acciones disponibles
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {response.action_links.map((link, index) => (
-                  <Button
-                    key={index}
-                    variant={link.type === "primary" ? "default" : "outline"}
-                    size="sm"
-                    asChild
-                    className={
-                      link.type === "primary"
-                        ? "bg-[#C8102E] hover:bg-[#A00D24]"
-                        : ""
-                    }
-                  >
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                      <ExternalLink className="ml-2 h-3 w-3" />
-                    </a>
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
       </CardContent>
 
       {/* Footer con pregunta original */}
-      <CardFooter className="px-4 text-xs text-muted-foreground">
+      <CardFooter className="flex flex-col px-4 text-xs text-muted-foreground items-start">
         <span className="truncate">Consulta: "{response.question}"</span>
+
+        {/* Botones de acción */}
+        <div className="flex flex-col">
+          {response.action_links && response.action_links.length > 0 && (
+            <>
+              <div>
+                <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                  Acciones disponibles
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {response.action_links.map((link, index) => (
+                    <Button
+                      key={index}
+                      variant={link.type === "primary" ? "default" : "outline"}
+                      size="sm"
+                      asChild
+                      className={
+                        link.type === "primary"
+                          ? "bg-[#C8102E] hover:bg-[#A00D24]"
+                          : ""
+                      }
+                    >
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label}
+                        <ExternalLink className="ml-2 h-3 w-3" />
+                      </a>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );
