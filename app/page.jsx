@@ -209,24 +209,19 @@ export default function Home() {
           {/* Contenedor con altura máxima */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
             {/* Timeline - Columna izquierda con scroll */}
-            <div className="lg:col-span-1 bg-muted/20 rounded-lg p-3 overflow-hidden">
-              <div className="h-full overflow-y-auto pr-1">
-                <Timeline
-                  events={timelineEvents}
-                  isLoading={isLoading && timelineEvents.length === 0}
-                />
-              </div>
+            <div className="lg:col-span-1 overflow-hidden">
+              <Timeline
+                events={timelineEvents}
+                isLoading={isLoading && timelineEvents.length === 0}
+              />
             </div>
 
             {/* Response Card - Columna derecha */}
             <div className="lg:col-span-2 overflow-hidden">
-              {/* <Markdown remarkPlugins={[remarkGfm]}>Content</Markdown> */}
-              <div className="h-full overflow-y-auto">
-                <ResponseCard
-                  response={response}
-                  isLoading={isLoading && !response}
-                />
-              </div>
+              <ResponseCard
+                response={response}
+                isLoading={isLoading && !response}
+              />
             </div>
           </div>
         </section>

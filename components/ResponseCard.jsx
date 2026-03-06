@@ -80,19 +80,19 @@ function SourceItem({ source }) {
 
 function ResponseSkeleton() {
   return (
-    <Card className="w-full">
-      <CardHeader>
+    <Card className="w-full h-full flex flex-col">
+      <CardHeader className="py-0 px-4 mb-0">
         <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-4 w-48 mt-2" />
+        <Skeleton className="h-4 w-48 mt-1" />
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="flex-1 overflow-y-auto py-0 px-4 space-y-4">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-3/4" />
         <Separator />
         <Skeleton className="h-20 w-full" />
       </CardContent>
-      <CardFooter>
+      <CardFooter className="py-0 px-4">
         <Skeleton className="h-10 w-24" />
       </CardFooter>
     </Card>
@@ -112,15 +112,15 @@ export function ResponseCard({ response, isLoading = false }) {
   const domainLabel = domain?.label || response.detected_domain;
 
   return (
-    <Card className="w-full overflow-hidden">
+    <Card className="w-full h-full flex flex-col overflow-hidden">
       {/* Encabezado con área oficial */}
-      <CardHeader className="bg-muted/30 pb-4">
+      <CardHeader className="py-0 px-4 mb-0">
         <div className="flex items-center justify-between">
           <div>
-            <CardDescription className="text-xs uppercase tracking-wide mb-1">
+            <CardDescription className="text-xs uppercase tracking-wide mb-0">
               Área de consulta
             </CardDescription>
-            <CardTitle className="text-lg flex items-center gap-2">
+            <CardTitle className="text-lg flex items-center gap-2 mt-1">
               <Building2 className="h-5 w-5 text-[#C8102E]" />
               {domainLabel}
             </CardTitle>
@@ -134,7 +134,7 @@ export function ResponseCard({ response, isLoading = false }) {
       </CardHeader>
 
       {/* Respuesta concisa */}
-      <CardContent className="pt-4 space-y-4">
+      <CardContent className="flex-1 overflow-y-auto py-0 px-4">
         <div>
           <h4 className="text-sm font-medium text-muted-foreground mb-2">
             Respuesta
@@ -197,7 +197,7 @@ export function ResponseCard({ response, isLoading = false }) {
       </CardContent>
 
       {/* Footer con pregunta original */}
-      <CardFooter className="bg-muted/30 text-xs text-muted-foreground">
+      <CardFooter className="py-0 px-4 text-xs text-muted-foreground">
         <span className="truncate">Consulta: "{response.question}"</span>
       </CardFooter>
     </Card>

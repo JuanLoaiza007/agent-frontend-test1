@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Search,
   Database,
@@ -142,10 +143,14 @@ function TimelineSkeleton() {
 export function Timeline({ events = [], isLoading = false }) {
   if (isLoading) {
     return (
-      <div className="rounded-lg border bg-card p-4">
-        <h3 className="font-semibold mb-4 text-sm">Proceso de búsqueda</h3>
-        <TimelineSkeleton />
-      </div>
+      <Card className="w-full h-full flex flex-col">
+        <CardHeader className="py-0 px-4 mb-0">
+          <CardTitle className="text-sm">Proceso de búsqueda</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1 overflow-y-auto py-0 px-4">
+          <TimelineSkeleton />
+        </CardContent>
+      </Card>
     );
   }
 
@@ -154,18 +159,22 @@ export function Timeline({ events = [], isLoading = false }) {
   }
 
   return (
-    <div className="rounded-lg border bg-card p-4">
-      <h3 className="font-semibold mb-4 text-sm">Proceso de búsqueda</h3>
-      <div className="relative">
-        {events.map((event, index) => (
-          <TimelineItem
-            key={index}
-            event={event}
-            isLast={index === events.length - 1}
-          />
-        ))}
-      </div>
-    </div>
+    <Card className="w-full h-full flex flex-col">
+      <CardHeader className="py-0 px-4 mb-0">
+        <CardTitle className="text-sm">Proceso de búsqueda</CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1 overflow-y-auto py-0 px-4">
+        <div className="relative">
+          {events.map((event, index) => (
+            <TimelineItem
+              key={index}
+              event={event}
+              isLast={index === events.length - 1}
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
