@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        <main className="w-full h-screen pt-14 pb-16 overflow-hidden">
+        <main className="w-full min-h-screen pt-14 pb-20 sm:pt-14 sm:pb-16 overflow-x-hidden">
           {children}
         </main>
         <Footer />

@@ -80,7 +80,7 @@ function SourceItem({ source }) {
 
 function ResponseSkeleton() {
   return (
-    <Card className="w-full h-full flex flex-col">
+    <Card className="w-full h-auto sm:h-full flex flex-col">
       <CardHeader className="px-4 mb-0">
         <Skeleton className="h-6 w-32" />
         <Skeleton className="h-4 w-48 mt-1" />
@@ -99,9 +99,26 @@ function ResponseSkeleton() {
   );
 }
 
-export function ResponseCard({ response, isLoading = false }) {
+export function ResponseCard({ response, isLoading = false, className }) {
   if (isLoading) {
-    return <ResponseSkeleton />;
+    return (
+      <Card className={`w-full h-full flex flex-col ${className || ""}`}>
+        <CardHeader className="px-4 mb-0">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-4 w-48 mt-1" />
+        </CardHeader>
+        <CardContent className="flex-1 overflow-y-auto px-4 min-h-0">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+          <Separator />
+          <Skeleton className="h-20 w-full" />
+        </CardContent>
+        <CardFooter className="px-4">
+          <Skeleton className="h-10 w-24" />
+        </CardFooter>
+      </Card>
+    );
   }
 
   if (!response) {
@@ -112,7 +129,9 @@ export function ResponseCard({ response, isLoading = false }) {
   const domainLabel = domain?.label || response.detected_domain;
 
   return (
-    <Card className="w-full h-full flex flex-col overflow-hidden">
+    <Card
+      className={`w-full h-full flex flex-col overflow-clip ${className || ""}`}
+    >
       {/* Encabezado con área oficial */}
       <CardHeader className="px-4 mb-0">
         <div className="flex items-center justify-between">
@@ -159,47 +178,37 @@ export function ResponseCard({ response, isLoading = false }) {
           </>
         )}
       </CardContent>
-
+      <Separator />
       {/* Footer con pregunta original */}
-      <CardFooter className="flex flex-col px-4 text-xs text-muted-foreground items-start">
+      <CardFooter className="flex flex-col px-4 pt-1 text-xs text-muted-foreground w-full items-end">
         <span className="truncate">Consulta: "{response.question}"</span>
 
         {/* Botones de acción */}
-        <div className="flex flex-col">
-          {response.action_links && response.action_links.length > 0 && (
-            <>
-              <div>
-                <h4 className="text-sm font-medium text-muted-foreground mb-2">
-                  Acciones disponibles
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {response.action_links.map((link, index) => (
-                    <Button
-                      key={index}
-                      variant={link.type === "primary" ? "default" : "outline"}
-                      size="sm"
-                      asChild
-                      className={
-                        link.type === "primary"
-                          ? "bg-[#C8102E] hover:bg-[#A00D24]"
-                          : ""
-                      }
-                    >
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link.label}
-                        <ExternalLink className="ml-2 h-3 w-3" />
-                      </a>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-        </div>
+        {response.action_links && response.action_links.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <h4 className="text-sm font-medium">Acciones disponibles</h4>
+            <div className="flex flex-wrap gap-2">
+              {response.action_links.map((link, index) => (
+                <Button
+                  key={index}
+                  variant={link.type === "primary" ? "default" : "outline"}
+                  size="sm"
+                  asChild
+                  className={
+                    link.type === "primary"
+                      ? "bg-[#C8102E] hover:bg-[#A00D24]"
+                      : ""
+                  }
+                >
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                    <ExternalLink className="ml-2 h-3 w-3" />
+                  </a>
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );

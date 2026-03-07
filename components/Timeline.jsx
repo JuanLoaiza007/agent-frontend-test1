@@ -158,14 +158,14 @@ function TimelineSkeleton() {
   );
 }
 
-export function Timeline({ events = [], isLoading = false }) {
+export function Timeline({ events = [], isLoading = false, className }) {
   if (isLoading) {
     return (
-      <Card className="w-full h-full flex flex-col">
+      <Card className={`w-full h-full flex flex-col ${className || ""}`}>
         <CardHeader className="px-4 mb-0">
           <CardTitle className="text-sm">Proceso de búsqueda</CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 overflow-y-auto px-4">
+        <CardContent className="flex-1 overflow-y-scroll px-4">
           <TimelineSkeleton />
         </CardContent>
       </Card>
@@ -180,11 +180,11 @@ export function Timeline({ events = [], isLoading = false }) {
   const displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
 
   return (
-    <Card className="w-full h-full flex flex-col">
-      <CardHeader className="px-4 mb-0">
+    <Card className={`w-full h-full flex flex-col ${className || ""}`}>
+      <CardHeader className="px-4 mb-0 pb-2 flex-shrink-0">
         <CardTitle className="text-sm">Proceso de búsqueda</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto px-4">
+      <CardContent className="flex-1 overflow-y-auto px-2 sm:px-4 min-h-0">
         <div className="relative">
           {displayEvents.map((event, index) => (
             <TimelineItem
