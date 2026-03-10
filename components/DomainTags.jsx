@@ -11,11 +11,17 @@ import { DOMAINS } from "@/lib/constants";
  * - Por defecto: etiquetas en gris tenue
  * - Cuando el Planner detecta el área: el dominio se ilumina en Rojo Univalle
  */
-export function DomainTags({ activeDomain = null, confidence = null }) {
+export function DomainTags({
+  activeDomain = null,
+  confidence = null,
+  className = "",
+}) {
   const domainList = Object.values(DOMAINS);
 
   return (
-    <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+    <div
+      className={`flex flex-wrap justify-center gap-1.5 sm:gap-2 ${className}`}
+    >
       {domainList.map((domain) => {
         const isActive = activeDomain === domain.id;
 

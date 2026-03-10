@@ -66,11 +66,11 @@ function SourceItem({ source }) {
 
   return (
     <div className="flex items-center justify-between p-2 rounded-md bg-muted">
-      <div className="flex items-center gap-2">
-        <TypeIcon className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">{source.name}</span>
+      <div className="flex items-center gap-2 min-w-0">
+        <TypeIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+        <span className="text-sm font-medium truncate">{source.name}</span>
       </div>
-      <div className={`flex items-center gap-1 ${statusColor}`}>
+      <div className={`flex items-center gap-1 flex-shrink-0 ${statusColor}`}>
         <StatusIcon className="h-3 w-3" />
         <span className="text-xs capitalize">{source.status}</span>
       </div>
@@ -186,11 +186,11 @@ export function ResponseCard({ response, isLoading = false, className }) {
                   variant={link.type === "primary" ? "default" : "outline"}
                   size="sm"
                   asChild
-                  className={`max-w-100`}
+                  className="max-w-[180px] truncate"
                 >
                   <a href={link.url} target="_blank" rel="noopener noreferrer">
-                    <p className="truncate">{link.label}</p>
-                    <ExternalLink className="ml-2 h-3 w-3" />
+                    <span className="truncate">{link.label}</span>
+                    <ExternalLink className="ml-2 h-3 w-3 flex-shrink-0" />
                   </a>
                 </Button>
               ))}

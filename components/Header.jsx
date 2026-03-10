@@ -3,9 +3,7 @@
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-
-const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+import { ENDPOINTS } from "@/lib/config";
 
 /**
  * Header component - Fixed at the top with transparent background and blur
@@ -16,7 +14,7 @@ export function Header() {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/health`);
+        const res = await fetch(ENDPOINTS.health);
         const data = await res.json();
         setSystemStatus(data);
       } catch (e) {
