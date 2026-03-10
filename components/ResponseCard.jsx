@@ -65,14 +65,18 @@ function SourceItem({ source }) {
   const statusColor = SOURCE_STATUS_COLORS[source.status] || "text-gray-500";
 
   return (
-    <div className="flex items-center justify-between p-2 rounded-md bg-muted">
-      <div className="flex items-center gap-2 min-w-0">
+    <div className="flex items-center justify-between p-2 rounded-md bg-muted gap-2">
+      <div className="flex items-center gap-2 min-w-0 flex-1">
         <TypeIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-        <span className="text-sm font-medium truncate">{source.name}</span>
+        <span className="text-sm font-medium truncate flex-1">
+          {source.name}
+        </span>
       </div>
       <div className={`flex items-center gap-1 flex-shrink-0 ${statusColor}`}>
         <StatusIcon className="h-3 w-3" />
-        <span className="text-xs capitalize">{source.status}</span>
+        <span className="text-xs capitalize whitespace-nowrap">
+          {source.status}
+        </span>
       </div>
     </div>
   );
@@ -133,19 +137,19 @@ export function ResponseCard({ response, isLoading = false, className }) {
       className={`w-full h-full flex flex-col overflow-clip ${className || ""}`}
     >
       {/* Encabezado con área oficial */}
-      <CardHeader className="px-4 mb-0">
-        <div className="flex items-center justify-between">
-          <div>
+      <CardHeader className="px-3 sm:px-4 mb-0">
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0">
             <CardDescription className="text-xs uppercase tracking-wide mb-0">
               Área de consulta
             </CardDescription>
-            <CardTitle className="text-lg flex items-center gap-2 mt-1">
-              <Building2 className="h-5 w-5 text-[#C8102E]" />
-              {domainLabel}
+            <CardTitle className="text-base sm:text-lg flex items-center gap-2 mt-1">
+              <Building2 className="h-4 w-4 sm:h-5 sm:w-5 text-[#C8102E] flex-shrink-0" />
+              <span className="truncate">{domainLabel}</span>
             </CardTitle>
           </div>
           {response.domain_confidence && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs flex-shrink-0">
               {Math.round(response.domain_confidence * 100)}% confianza
             </Badge>
           )}
@@ -177,16 +181,16 @@ export function ResponseCard({ response, isLoading = false, className }) {
 
         {/* Botones de acción */}
         {response.action_links && response.action_links.length > 0 && (
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-2 w-full items-end">
             <h4 className="text-sm font-medium">Acciones disponibles</h4>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-end">
               {response.action_links.map((link, index) => (
                 <Button
                   key={index}
                   variant={link.type === "primary" ? "default" : "outline"}
                   size="sm"
                   asChild
-                  className="max-w-[180px] truncate"
+                  className="max-w-[200px] sm:max-w-[240px] truncate"
                 >
                   <a href={link.url} target="_blank" rel="noopener noreferrer">
                     <span className="truncate">{link.label}</span>

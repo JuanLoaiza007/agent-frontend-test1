@@ -26,9 +26,9 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b bg-white/80 backdrop-blur-md">
-      <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
+      <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#C8102E] flex items-center justify-center">
               <span className="text-white font-bold text-xs sm:text-sm">
                 UV
@@ -38,12 +38,12 @@ export function Header() {
               <h1 className="font-semibold text-sm sm:text-base">
                 Sistema de Consulta
               </h1>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground hidden sm:block">
                 Tesis Juan & Julián
               </p>
             </div>
           </div>
-          <div className="text-xs text-center text-muted-foreground hidden sm:block">
+          <div className="text-xs text-center text-muted-foreground">
             {systemStatus ? (
               <Badge
                 className={`text-xs ${

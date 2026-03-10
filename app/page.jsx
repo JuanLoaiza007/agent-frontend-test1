@@ -26,15 +26,15 @@ export default function Home() {
   } = useAgentQuery();
 
   return (
-    <main className="flex flex-col w-full h-full sm:py-12 md:py-24 overflow-y-auto">
+    <main className="flex flex-col w-full h-full py-8 md:py-12 lg:py-16 overflow-y-auto">
       <section
-        className={`container mx-auto px-4 flex flex-col ${!hasResults ? "flex-1 justify-center" : "py-6 lg:py-8"}`}
+        className={`container mx-auto px-4 flex flex-col ${!hasResults ? "flex-1 justify-center" : "py-4 md:py-6"}`}
       >
-        <div className="text-center mb-4 sm:mb-6">
-          <h2 className="text-lg sm:text-xl lg:text-3xl font-bold mb-1 sm:mb-2">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
             ¿En qué podemos ayudarte?
           </h2>
-          <p className="text-muted-foreground text-xs sm:text-xs lg:text-base">
+          <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto">
             Consulta información sobre trámites y servicios de la Universidad
             del Valle
           </p>
@@ -44,20 +44,21 @@ export default function Home() {
         <DomainTags
           activeDomain={activeDomain}
           confidence={domainConfidence}
-          className="mt-2 sm:mt-4"
+          className="mt-4 md:mt-6"
         />
       </section>
 
       {hasResults && (
-        <section className="container mx-auto px-2 sm:px-4 pb-16 sm:py-4 flex-1 my-2">
-          <div className="flex flex-col md:grid md:grid-cols-3 gap-2 md:h-[35vh] lg:h-[45vh]">
+        <section className="container mx-auto px-3 sm:px-4 pb-8 md:py-4 flex-1">
+          <div className="flex flex-col md:grid md:grid-cols-3 gap-4 lg:gap-6 flex-1 min-h-0">
             <Timeline
-              className="sm:col-span-1 h-50 md:h-60"
+              className="sm:col-span-1 max-h-[180px] md:max-h-[200px] lg:max-h-[240px]"
               events={timelineEvents}
               isLoading={isLoading && timelineEvents.length === 0}
+              maxEvents={3}
             />
             <ResponseCard
-              className="sm:col-span-2 h-full md:max-h-120"
+              className="sm:col-span-2 min-h-[300px] md:min-h-0"
               response={response}
               isLoading={isLoading && !response}
             />

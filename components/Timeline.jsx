@@ -158,14 +158,19 @@ function TimelineSkeleton() {
   );
 }
 
-export function Timeline({ events = [], isLoading = false, className }) {
+export function Timeline({
+  events = [],
+  isLoading = false,
+  className,
+  maxEvents = Infinity,
+}) {
   if (isLoading) {
     return (
       <Card className={`w-full h-full flex flex-col ${className || ""}`}>
         <CardHeader className="px-4 mb-0">
           <CardTitle className="text-sm">Proceso de búsqueda</CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 overflow-y-scroll px-4">
+        <CardContent className="flex-1 overflow-y-auto px-4">
           <TimelineSkeleton />
         </CardContent>
       </Card>
@@ -176,15 +181,18 @@ export function Timeline({ events = [], isLoading = false, className }) {
     return null;
   }
 
-  // Aplicar reverse order si está configurado
-  const displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
+  // Aplicar reverse order si está configurado, y limitar eventos
+  let displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
+  displayEvents = displayEvents.slice(0, maxEvents);
 
   return (
     <Card className={`w-full h-full flex flex-col ${className || ""}`}>
-      <CardHeader className="px-4 mb-0 pb-2">
-        <CardTitle className="text-sm">Proceso de búsqueda</CardTitle>
+      <CardHeader className="px-3 sm:px-4 mb-0 pb-2">
+        <CardTitle className="text-sm sm:text-base">
+          Proceso de búsqueda
+        </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto px-2 sm:px-4 min-h-0">
+      <CardContent className="flex-1 overflow-y-auto px-2 sm:px-3 md:px-4 min-h-0">
         <div className="relative">
           {displayEvents.map((event, index) => (
             <TimelineItem
@@ -211,7 +219,7 @@ export function TimelineAccordion({ events = [], isLoading = false }) {
     return (
       <Accordion type="single" collapsible defaultValue="timeline">
         <AccordionItem value="timeline">
-          <AccordionTrigger className="text-sm">
+          <AccordionTrigger className="text-sm sm:text-base">
             Proceso de búsqueda
           </AccordionTrigger>
           <AccordionContent>
@@ -232,7 +240,7 @@ export function TimelineAccordion({ events = [], isLoading = false }) {
   return (
     <Accordion type="single" collapsible defaultValue="timeline">
       <AccordionItem value="timeline">
-        <AccordionTrigger className="text-sm">
+        <AccordionTrigger className="text-sm sm:text-base">
           Proceso de búsqueda ({events.length} pasos)
         </AccordionTrigger>
         <AccordionContent>
