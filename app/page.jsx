@@ -47,13 +47,12 @@ export default function Home() {
         <section className="container mx-auto px-3 sm:px-4 pb-8 md:py-4 flex-1">
           <div className="flex flex-col md:grid md:grid-cols-3 gap-4 lg:gap-6 flex-1 min-h-0">
             <Timeline
-              className="sm:col-span-1 max-h-[180px] md:max-h-[200px] lg:max-h-[240px]"
+              className="sm:col-span-1 max-h-45 md:max-h-50 lg:max-h-60"
               events={timelineEvents}
               isLoading={isLoading && timelineEvents.length === 0}
-              maxEvents={3}
             />
             <ResponseCard
-              className="sm:col-span-2 min-h-[300px] md:min-h-0"
+              className="sm:col-span-2 min-h-75 md:min-h-0"
               response={response}
               isLoading={isLoading && !response}
             />
