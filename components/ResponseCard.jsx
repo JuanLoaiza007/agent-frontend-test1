@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -37,10 +38,7 @@ import {
 import { DOMAINS } from "@/lib/constants";
 import { cn, isValidLink } from "@/lib/utils";
 import { AnimatedMarkdown } from "./AnimatedMarkdown";
-
-/**
- * ResponseCard - Tarjeta de respuesta con fuentes y acciones
- */
+import { ERROR_CATALOG, formatErrorForClipboard } from "@/lib/errors";
 
 const SOURCE_TYPE_ICONS = {
   normativa: FileText,
@@ -51,7 +49,6 @@ const SOURCE_TYPE_ICONS = {
 };
 
 function ChunkItem({ chunk }) {
-  // Color del score basado en relevancia
   const getScoreColor = (score) => {
     if (score > 0.4) return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800";
     if (score > 0.2) return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800";
@@ -75,8 +72,6 @@ function ChunkItem({ chunk }) {
 function SourceItem({ source }) {
   const isVectorDB = !source.url;
   const TypeIcon = isVectorDB ? Database : (SOURCE_TYPE_ICONS[source.type] || FileText);
-  
-  // Ordenar chunks por score descendente
   const sortedChunks = [...(source.chunks || [])].sort((a, b) => b.score - a.score);
 
   return (
@@ -138,6 +133,45 @@ function SourceItem({ source }) {
   );
 }
 
+function ErrorState({ response }) {
+  const [copied, setCopied] = useState(false);
+  const errorInfo = ERROR_CATALOG[response.error_type] || ERROR_CATALOG.DEFAULT;
+  const ErrorIcon = errorInfo.icon;
+
+  const handleCopy = () => {
+    const text = formatErrorForClipboard({
+      type: response.error_type,
+      raw_message: response.answer,
+    });
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center py-10 px-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className={cn("p-4 rounded-full bg-muted mb-4", errorInfo.color)}>
+        <ErrorIcon className="h-10 w-10" />
+      </div>
+      <h3 className="text-xl font-bold mb-2">{errorInfo.title}</h3>
+      <p className="text-muted-foreground mb-8 max-w-sm leading-relaxed">
+        {errorInfo.message}
+      </p>
+      
+      <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+        <Button 
+          variant="outline" 
+          onClick={handleCopy}
+          className="gap-2"
+        >
+          {copied ? <CheckCircle className="h-4 w-4 text-green-500" /> : <ExternalLink className="h-4 w-4" />}
+          {copied ? "Copiado" : "Copiar Error para Soporte"}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 function ResponseSkeleton() {
   return (
     <Card className="w-full h-auto sm:h-full flex flex-col">
@@ -159,7 +193,6 @@ function ResponseSkeleton() {
   );
 }
 
-/** Componente de carga animado */
 function LoadingAgent({ className }) {
   return (
     <Card className={`w-full h-full flex flex-col ${className || ""}`}>
@@ -177,13 +210,11 @@ function LoadingAgent({ className }) {
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto px-4">
         <div className="flex flex-col items-center justify-center h-full min-h-[200px] gap-4">
-          {/* Animated agent icons */}
           <div className="flex gap-3">
             <Search className="h-6 w-6 text-[#C8102E] animate-pulse" />
             <Database className="h-6 w-6 text-[#C8102E]/70 animate-pulse delay-75" />
             <Sparkles className="h-6 w-6 text-[#C8102E]/50 animate-pulse delay-150" />
           </div>
-          {/* Animated dots */}
           <div className="flex items-center gap-1 h-6">
             <span className="text-[#C8102E] text-lg font-medium">Buscando</span>
             <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-bounce" />
@@ -209,13 +240,19 @@ export function ResponseCard({ response, isLoading = false, className }) {
     return null;
   }
 
+  const isError = response.detected_domain === "error";
+
+  if (isError) {
+    return (
+      <Card className={cn("w-full h-full flex flex-col justify-center overflow-clip border-destructive/20 bg-destructive/5", className)}>
+        <ErrorState response={response} />
+      </Card>
+    );
+  }
+
   const domain = DOMAINS[response.detected_domain];
   const domainLabel = domain?.label || response.detected_domain;
-
-  // Filtrar fuentes: se muestran todas, pero validamos el link internamente en el modal
   const validSources = response.sources || [];
-
-  // Filtrar acciones inválidas (todas las acciones deben tener URL válida)
   const validActions = (response.action_links || []).filter((link) =>
     isValidLink(link.url)
   );
@@ -224,7 +261,6 @@ export function ResponseCard({ response, isLoading = false, className }) {
     <Card
       className={`w-full h-full flex flex-col overflow-clip ${className || ""}`}
     >
-      {/* Encabezado con área oficial */}
       <CardHeader className="px-3 sm:px-4 mb-0">
         <div className="flex items-center justify-between gap-2">
           <div className="min-w-0">
@@ -244,11 +280,9 @@ export function ResponseCard({ response, isLoading = false, className }) {
         </div>
       </CardHeader>
 
-      {/* Respuesta concisa */}
       <CardContent className="flex flex-col flex-1 overflow-y-auto px-4 gap-2 py-2">
         <h4 className="text-sm font-medium text-muted-foreground">Respuesta</h4>
         <AnimatedMarkdown content={response.answer} />
-        {/* Metadatos de fuentes */}
         {validSources.length > 0 && (
           <>
             <h4 className="text-sm font-medium text-muted-foreground mt-2">
@@ -263,11 +297,9 @@ export function ResponseCard({ response, isLoading = false, className }) {
         )}
       </CardContent>
       <Separator />
-      {/* Footer con pregunta original */}
       <CardFooter className="flex flex-col px-4 pt-1 text-xs text-muted-foreground w-full items-end">
         <span className="truncate">Consulta: "{response.question}"</span>
 
-        {/* Botones de acción */}
         {validActions.length > 0 && (
           <div className="flex flex-col gap-2 w-full items-end mt-2">
             <h4 className="text-sm font-medium">Acciones disponibles</h4>

@@ -5,6 +5,7 @@ import { DomainTags } from "@/components/DomainTags";
 import { Timeline } from "@/components/Timeline";
 import { ResponseCard } from "@/components/ResponseCard";
 import { useAgentQuery } from "@/lib/hooks/useAgentQuery";
+import { cn } from "@/lib/utils";
 
 /**
  * Página principal del sistema de consulta agéntico
@@ -19,6 +20,8 @@ export default function Home() {
     domainConfidence,
     hasResults,
   } = useAgentQuery();
+
+  const isError = response?.detected_domain === "error";
 
   return (
     <main className="flex flex-col w-full h-full py-8 md:py-12 lg:py-16 overflow-y-auto">
@@ -45,14 +48,22 @@ export default function Home() {
 
       {hasResults && (
         <section className="container mx-auto px-3 sm:px-4 pb-8 md:py-4 flex-1">
-          <div className="flex flex-col md:grid md:grid-cols-3 gap-4 lg:gap-6 flex-1 min-h-0">
-            <Timeline
-              className="sm:col-span-1 max-h-45 md:max-h-50 lg:max-h-60"
-              events={timelineEvents}
-              isLoading={isLoading && timelineEvents.length === 0}
-            />
+          <div className={cn(
+            "flex flex-col gap-4 lg:gap-6 flex-1 min-h-0",
+            !isError && "md:grid md:grid-cols-3"
+          )}>
+            {!isError && (
+              <Timeline
+                className="sm:col-span-1 max-h-45 md:max-h-50 lg:max-h-60"
+                events={timelineEvents}
+                isLoading={isLoading && timelineEvents.length === 0}
+              />
+            )}
             <ResponseCard
-              className="sm:col-span-2 min-h-75 md:min-h-0"
+              className={cn(
+                "min-h-75 md:min-h-0",
+                !isError ? "sm:col-span-2" : "w-full max-w-2xl mx-auto"
+              )}
               response={response}
               isLoading={isLoading && !response}
             />
@@ -62,3 +73,4 @@ export default function Home() {
     </main>
   );
 }
+
