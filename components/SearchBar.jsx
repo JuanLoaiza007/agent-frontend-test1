@@ -29,8 +29,8 @@ export function SearchBar({ onSearch, isLoading = false }) {
   };
 
   return (
-    <div className="w-full max-w-2xl lg:max-w-3xl mx-auto">
-      <form onSubmit={handleSubmit} className="relative">
+    <div className="w-full max-w-4xl mx-auto">
+      <form onSubmit={handleSubmit} className="relative w-full">
         <div className="relative">
           <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
           <Input

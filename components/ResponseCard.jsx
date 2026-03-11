@@ -20,6 +20,10 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
+  Bot,
+  Search,
+  Database,
+  Sparkles,
 } from "lucide-react";
 import { DOMAINS } from "@/lib/constants";
 import Markdown from "react-markdown";
@@ -103,26 +107,50 @@ function ResponseSkeleton() {
   );
 }
 
+/** Componente de carga animado con la identidad de la Universidad del Valle */
+function LoadingAgent({ className }) {
+  return (
+    <Card className={`w-full h-full flex flex-col ${className || ""}`}>
+      <CardHeader className="px-4 mb-0">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-[#C8102E] animate-ping" />
+          <CardDescription className="text-xs uppercase tracking-wide">
+            Procesando
+          </CardDescription>
+        </div>
+        <CardTitle className="text-lg flex items-center gap-2 mt-1">
+          <Bot className="h-5 w-5 text-[#C8102E] animate-bounce" />
+          <span>Buscando respuesta</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1 overflow-y-auto px-4">
+        <div className="flex flex-col items-center justify-center h-full min-h-[200px] gap-4">
+          {/* Animated agent icons */}
+          <div className="flex gap-3">
+            <Search className="h-6 w-6 text-[#C8102E] animate-pulse" />
+            <Database className="h-6 w-6 text-[#C8102E]/70 animate-pulse delay-75" />
+            <Sparkles className="h-6 w-6 text-[#C8102E]/50 animate-pulse delay-150" />
+          </div>
+          {/* Animated dots */}
+          <div className="flex items-center gap-1 h-6">
+            <span className="text-[#C8102E] text-lg font-medium">Buscando</span>
+            <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-bounce" />
+            <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-bounce delay-100" />
+            <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-bounce delay-200" />
+          </div>
+          <p className="text-muted-foreground text-sm text-center max-w-sm">
+            El agente está analizando tu consulta y buscando en las fuentes
+            disponibles
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function ResponseCard({ response, isLoading = false, className }) {
   if (isLoading) {
-    return (
-      <Card className={`w-full h-full flex flex-col ${className || ""}`}>
-        <CardHeader className="px-4 mb-0">
-          <Skeleton className="h-6 w-32" />
-          <Skeleton className="h-4 w-48 mt-1" />
-        </CardHeader>
-        <CardContent className="flex-1 overflow-y-auto px-4 min-h-0">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-          <Separator />
-          <Skeleton className="h-20 w-full" />
-        </CardContent>
-        <CardFooter className="px-4">
-          <Skeleton className="h-10 w-24" />
-        </CardFooter>
-      </Card>
-    );
+    return <LoadingAgent className={className} />;
   }
 
   if (!response) {
