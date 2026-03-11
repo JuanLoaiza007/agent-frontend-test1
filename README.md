@@ -30,25 +30,18 @@ Sistema de consulta inteligente que permite a estudiantes de pregrado de la Univ
 │                         BACKEND                                 │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
 │  │  API REST   │  │   Agente    │  │   Gestor de Documentos │ │
-│  │  (FastAPI)  │  │  (LangChain)│  │   (ChromaDB + RAG)    │ │
+│  │  (FastAPI)  │  │  (LangChain)│  │    (VectorDB + RAG)    │ │
 │  └─────────────┘  └─────────────┘  └─────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ## 🛠️ Tecnologías
 
-### Frontend
 - **Next.js 16** - Framework React con App Router
 - **React 19** - Biblioteca de UI
 - **Tailwind CSS 4** - Estilos con utility-first
 - **shadcn/ui** - Componentes accesibles y personalizables
 - **Lucide React** - Iconos
-
-### Backend
-- **FastAPI** - Framework Python de alto rendimiento
-- **LangChain** - Framework para desarrollo de aplicaciones con LLMs
-- **ChromaDB** - Base de datos vectorial
-- **OpenAI GPT** - Modelo de lenguaje
 
 ## 📁 Estructura del Proyecto
 
@@ -78,7 +71,7 @@ agent-frontend-test1/
 
 ### Prerrequisitos
 
-- Node.js 18+ 
+- Node.js 20+ 
 - npm o yarn
 
 ### Instalación
@@ -92,7 +85,7 @@ cd agent-frontend-test1
 npm install
 
 # Configurar variables de entorno
-# Crear archivo .env.local con:
+# Crear archivo .env. con:
 # NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 ```
 
@@ -115,22 +108,12 @@ npm start
 
 ## 📱 Uso del Sistema
 
-1. **Ingresa una consulta** en la barra de búsqueda (ej: "¿Cómo solicitar una奖学金?")
+1. **Ingresa una consulta** en la barra de búsqueda (ej: "¿Puedo llevar mi león?")
 2. **Observa el proceso** en el timeline mientras el agente razona
 3. **Recibe la respuesta** con las fuentes consultadas
 4. **Accede a acciones** directas (enlaces a portales, formularios, etc.)
 
 ## 🎓 Autores
 
-- **Juan** - Estudiante de Ingeniería de Sistemas
-- **Julián** - Estudiante de Ingeniería de Sistemas
-
-Universidad del Valle - Colombia
-
-## 📄 Licencia
-
-Este proyecto es para fines educativos - Trabajo de Grado.
-
----
-
-*Sistema de Consulta Agéntico - Universidad del Valle © 2024*
+- **Juan Loaiza**
+- **Julián Rendón**
