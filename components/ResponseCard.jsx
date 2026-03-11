@@ -61,21 +61,48 @@ function SourceItem({ source }) {
   const StatusIcon = SOURCE_STATUS_ICONS[source.status] || Clock;
   const statusColor = SOURCE_STATUS_COLORS[source.status] || "text-gray-500";
 
+  const isLink = !!source.url;
+
   return (
-    <div className="flex items-center justify-between p-2 rounded-md bg-muted gap-2">
-      <div className="flex items-center gap-2 min-w-0 flex-1">
-        <TypeIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-        <span className="text-sm font-medium truncate flex-1">
-          {source.name}
-        </span>
-      </div>
-      <div className={`flex items-center gap-1 flex-shrink-0 ${statusColor}`}>
-        <StatusIcon className="h-3 w-3" />
-        <span className="text-xs capitalize whitespace-nowrap">
-          {source.status}
-        </span>
-      </div>
-    </div>
+    <Button
+      variant="outline"
+      size="sm"
+      asChild={isLink}
+      className="w-full justify-between h-auto py-2 px-3 text-left font-normal border-muted-foreground/10 hover:bg-muted/50"
+    >
+      {isLink ? (
+        <a href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between w-full gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <TypeIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <span className="text-sm font-medium truncate flex-1">
+              {source.name}
+            </span>
+            <ExternalLink className="h-3 w-3 text-muted-foreground/50 flex-shrink-0" />
+          </div>
+          <div className={`flex items-center gap-1 flex-shrink-0 ${statusColor}`}>
+            <StatusIcon className="h-3 w-3" />
+            <span className="text-[10px] sm:text-xs capitalize whitespace-nowrap">
+              {source.status}
+            </span>
+          </div>
+        </a>
+      ) : (
+        <div className="flex items-center justify-between w-full gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <TypeIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <span className="text-sm font-medium truncate flex-1">
+              {source.name}
+            </span>
+          </div>
+          <div className={`flex items-center gap-1 flex-shrink-0 ${statusColor}`}>
+            <StatusIcon className="h-3 w-3" />
+            <span className="text-[10px] sm:text-xs capitalize whitespace-nowrap">
+              {source.status}
+            </span>
+          </div>
+        </div>
+      )}
+    </Button>
   );
 }
 
