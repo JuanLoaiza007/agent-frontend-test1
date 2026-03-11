@@ -8,11 +8,6 @@ import { useAgentQuery } from "@/lib/hooks/useAgentQuery";
 
 /**
  * Página principal del sistema de consulta agéntico
- * Según filosofia-interfaz.md:
- * - Buscador único estilo Perplexity
- * - Clasificación pasiva de dominios
- * - Timeline de razonamiento visible
- * - Ficha de trámite como respuesta
  */
 export default function Home() {
   const {

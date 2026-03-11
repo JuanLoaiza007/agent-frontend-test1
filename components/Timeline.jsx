@@ -23,44 +23,26 @@ import {
 } from "lucide-react";
 
 /**
- * Timeline - Timeline de Razonamiento
- *
- * Muestra el flujo de los agentes de forma visual.
- *
- * CONFIGURATION FLAGS:
- * - GRAYSCALE_OLD_STEPS: Si es true, los pasos anteriores al último se muestran en gris
- * - REVERSE_ORDER: Si es true, los pasos más recientes aparecen primero (al revés)
+ * Timeline - Componente que muestra el proceso de búsqueda del agente
  */
 
-// === CONFIGURATION FLAGS ===
-// Cambiar a true para activar el comportamiento
-const GRAYSCALE_OLD_STEPS = true; // Los pasos anteriores al último se ven grises
-const REVERSE_ORDER = true; // Los pasos más nuevos aparecen primero
-
-// =============================
+// Configuration
 
 const STEP_ICONS = {
   planning: Search,
   domain_detected: CheckCircle2,
-  // Búsqueda en base de conocimiento
   vector_search: Database,
-  // Búsqueda en web
   web_search: Globe,
   search_web_pages: Globe,
-  // Inspección de páginas
   inspect_web_page: ExternalLink,
   page_inspection: ExternalLink,
-  // Inspección de PDFs
   inspect_pdf_document: FileText,
   pdf_inspection: FileText,
   read_pdf_section: BookOpen,
-  // Planificación y evaluación
   planner: Bot,
   replanner: Bot,
-  // Respuesta final
   synthesizing: Sparkles,
   final_response: Sparkles,
-  // Otros
   searching: Database,
   external_search: Globe,
 };
@@ -108,7 +90,6 @@ function TimelineItem({ event, isLast, grayscaleOldSteps = false }) {
   const colorClass = STEP_COLORS[event.step] || "text-gray-400";
   const label = STEP_LABELS[event.step] || event.step;
 
-  // Si grayscaleOldSteps está activo y NO es el último paso, usar colores grises
   const isGrayscale = grayscaleOldSteps && !isLast;
   const iconColor = isGrayscale ? "text-gray-400" : colorClass;
   const textColor = isGrayscale ? "text-gray-400" : "";
@@ -181,7 +162,6 @@ export function Timeline({
     return null;
   }
 
-  // Aplicar reverse order si está configurado, y limitar eventos
   let displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
   displayEvents = displayEvents.slice(0, maxEvents);
 
@@ -234,7 +214,6 @@ export function TimelineAccordion({ events = [], isLoading = false }) {
     return null;
   }
 
-  // Aplicar reverse order si está configurado
   const displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
 
   return (

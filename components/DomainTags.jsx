@@ -5,11 +5,7 @@ import { DOMAINS } from "@/lib/constants";
 
 /**
  * DomainTags - Barra de Estado de Dominios
- *
  * Cinco etiquetas (tags) con los nombres de los dominios.
- * Según filosofia-interfaz.md:
- * - Por defecto: etiquetas en gris tenue
- * - Cuando el Planner detecta el área: el dominio se ilumina en Rojo Univalle
  */
 export function DomainTags({
   activeDomain = null,

@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Loader2 } from "lucide-react";
 
 /**
- * SearchBar - Componente de buscador central (héroe)
- *
- * Barra de búsqueda prominente con texto de ayuda que menciona los dominios.
- * Según filosofia-interfaz.md: "Una barra de búsqueda prominente en el centro
- * con un texto de ayuda que mencione los dominios"
+ * SearchBar - Componente de buscador central
  */
 export function SearchBar({ onSearch, isLoading = false }) {
   const [query, setQuery] = useState("");

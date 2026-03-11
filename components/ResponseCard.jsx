@@ -30,13 +30,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 /**
- * ResponseCard - Ficha de Trámite
- *
- * Según filosofia-interfaz.md, la respuesta final debe ser una "Ficha de Trámite":
- * - Encabezado: Indica el área oficial (ej. Trámite Administrativo).
- * - Respuesta: Concisa (máximo 6 líneas).
- * - Metadatos de la Fuente: Un pequeño recuadro con el nombre de la resolución.
- * - Botón de Acción: Enlace directo al SIRA o al portal de pagos.
+ * ResponseCard - Tarjeta de respuesta con fuentes y acciones
  */
 
 const SOURCE_TYPE_ICONS = {
@@ -107,7 +101,7 @@ function ResponseSkeleton() {
   );
 }
 
-/** Componente de carga animado con la identidad de la Universidad del Valle */
+/** Componente de carga animado */
 function LoadingAgent({ className }) {
   return (
     <Card className={`w-full h-full flex flex-col ${className || ""}`}>

@@ -6,6 +6,11 @@
       "sourceType": "github",
       "computedHash": "6132ab481b5da1ad0a7c6104e7c8c2bc7b28cd44c39e8e27c71e5e72a3e97f76"
     },
+    "repository-pro": {
+      "source": "ev3lynx727/repository-pro",
+      "sourceType": "github",
+      "computedHash": "fd9a8123b3f5797a87f8a68bd55dbb4ba86bdeb00a0398bd04310a91e04bcf97"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
