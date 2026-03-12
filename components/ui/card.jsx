@@ -1,4 +1,5 @@
 import * as React from "react";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 import { cn } from "@/lib/utils";
 
@@ -8,6 +9,8 @@ function Card({ className, ...props }) {
       data-slot="card"
       className={cn(
         "bg-card text-card-foreground flex flex-col gap-1 rounded-xl border py-4 shadow-sm",
+        UI_CONFIG.card.opacity,
+        UI_CONFIG.card.blur,
         className,
       )}
       {...props}

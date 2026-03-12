@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import { ENDPOINTS } from "@/lib/config";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 /**
  * Header component - Fixed at the top with transparent background and blur
@@ -27,7 +28,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/40 backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/40 backdrop-blur-xl shadow-sm">
       <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">

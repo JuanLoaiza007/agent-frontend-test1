@@ -54,7 +54,7 @@ export function SearchBar({ onSearch, isLoading = false }) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={isLoading}
-            className="pl-10 pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base rounded-lg border-2 border-border focus:border-primary shadow-sm transition-all"
+            className="pl-10 pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base rounded-lg border-2 border-border focus:border-primary shadow-sm transition-all bg-background"
           />
 
           {/* Botón limpiar - derecha */}

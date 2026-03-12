@@ -24,7 +24,7 @@ export default function Home() {
   const isError = response?.detected_domain === "error";
 
   return (
-    <main className="flex flex-col w-full h-full overflow-y-auto">
+    <main className="flex flex-col w-full h-full py-8 md:py-12 lg:py-16 overflow-y-auto">
       <section
         className={`container mx-auto px-4 flex flex-col ${!hasResults ? "flex-1 justify-center py-12 md:py-16" : "py-8 md:py-12 lg:py-16"}`}
       >
