@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { icons } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +17,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Agent Frontend Test 1",
-  description: "Agent Frontend Test 1",
+  title: "QA Univalle",
+  description:
+    "Sistema inteligente de pregunta-respuesta sobre procesos académicos, administrativos, de bienestar, internacionalización e investigación.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "QA Univalle",
+  },
+  icons: {
+    apple: "/favicon.svg",
+  },
+};
+
+export const viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({ children }) {
