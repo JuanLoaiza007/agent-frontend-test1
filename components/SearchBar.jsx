@@ -38,7 +38,7 @@ export function SearchBar({ onSearch, isLoading = false }) {
             variant="ghost"
             size="icon"
             disabled={isLoading || !query.trim()}
-            className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 h-7 w-7 sm:h-8 sm:w-8 rounded-md text-[#C8102E] hover:bg-[#C8102E]/10 hover:text-[#C8102E] disabled:text-muted-foreground disabled:hover:bg-transparent z-10"
+            className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 h-7 w-7 sm:h-8 sm:w-8 rounded-md bg-[#C8102E] text-white hover:bg-[#C8102E]/90 disabled:bg-transparent disabled:text-muted-foreground z-10 transition-colors"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
@@ -54,7 +54,7 @@ export function SearchBar({ onSearch, isLoading = false }) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={isLoading}
-            className="pl-10 pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base rounded-lg border-2 border-border focus:border-primary shadow-sm transition-all bg-background"
+            className="pl-12 sm:pl-14 pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base rounded-lg border-2 border-border focus:border-primary shadow-sm transition-all bg-background"
           />
 
           {/* Botón limpiar - derecha */}
