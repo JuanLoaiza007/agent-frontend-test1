@@ -24,9 +24,9 @@ export default function Home() {
   const isError = response?.detected_domain === "error";
 
   return (
-    <main className="flex flex-col w-full h-full py-8 md:py-12 lg:py-16 overflow-y-auto">
+    <main className="flex flex-col w-full h-full overflow-y-auto">
       <section
-        className={`container mx-auto px-4 flex flex-col ${!hasResults ? "flex-1 justify-center" : "py-4 md:py-6"}`}
+        className={`container mx-auto px-4 flex flex-col ${!hasResults ? "flex-1 justify-center py-12 md:py-16" : "py-8 md:py-12 lg:py-16"}`}
       >
         <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
@@ -48,10 +48,12 @@ export default function Home() {
 
       {hasResults && (
         <section className="container mx-auto px-3 sm:px-4 pb-8 md:py-4 flex-1">
-          <div className={cn(
-            "flex flex-col gap-4 lg:gap-6 flex-1 min-h-0",
-            !isError && "md:grid md:grid-cols-3"
-          )}>
+          <div
+            className={cn(
+              "flex flex-col gap-4 lg:gap-6 flex-1 min-h-0",
+              !isError && "md:grid md:grid-cols-3",
+            )}
+          >
             {!isError && (
               <Timeline
                 className="sm:col-span-1 max-h-45 md:max-h-50 lg:max-h-60"
@@ -62,7 +64,7 @@ export default function Home() {
             <ResponseCard
               className={cn(
                 "min-h-75 md:min-h-0",
-                !isError ? "sm:col-span-2" : "w-full max-w-2xl mx-auto"
+                !isError ? "sm:col-span-2" : "w-full max-w-2xl mx-auto",
               )}
               response={response}
               isLoading={isLoading && !response}
@@ -73,4 +75,3 @@ export default function Home() {
     </main>
   );
 }
-

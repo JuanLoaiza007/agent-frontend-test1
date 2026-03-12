@@ -27,7 +27,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/40 backdrop-blur-xl">
       <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -55,7 +55,9 @@ export function Header() {
                       : "bg-red-500/10 text-red-600 hover:bg-red-500/20"
                   }`}
                 >
-                  <div className={`w-1.5 h-1.5 rounded-full mr-1.5 ${systemStatus.status === "ok" ? "bg-green-500 animate-pulse" : "bg-red-500"}`} />
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full mr-1.5 ${systemStatus.status === "ok" ? "bg-green-500 animate-pulse" : "bg-red-500"}`}
+                  />
                   {systemStatus.status === "ok" ? "Online" : "Offline"}
                 </Badge>
               ) : (
@@ -70,4 +72,3 @@ export function Header() {
     </header>
   );
 }
-
