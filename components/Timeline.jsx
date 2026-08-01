@@ -168,9 +168,9 @@ function TimelineItem({ event, isLast }) {
               </Badge>
             )}
           </div>
-          {event.latency !== undefined && (
+          {typeof event.duration_ms === "number" && (
             <span className="text-xs text-muted-foreground ml-2 whitespace-nowrap">
-              {(event.latency / 1000).toFixed(2)}s
+              {(event.duration_ms / 1000).toFixed(2)}s
             </span>
           )}
         </div>
@@ -236,9 +236,9 @@ export function Timeline({
       <CardHeader className="px-3 sm:px-4 mb-0 pb-2">
         <CardTitle className="text-sm sm:text-base flex items-center justify-between gap-2">
           <span>Proceso de búsqueda</span>
-          {latency !== undefined && latency !== null && !isLoading && (
+          {typeof latency === "number" && !isLoading && (
             <span className="text-xs font-normal text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md animate-in fade-in">
-              Latencia: {(latency / 1000).toFixed(2)}s
+              Tiempo total: {(latency / 1000).toFixed(2)}s
             </span>
           )}
         </CardTitle>
@@ -305,9 +305,9 @@ export function TimelineAccordion({
         <AccordionTrigger className="text-sm sm:text-base">
           <div className="flex items-center justify-between w-full pr-2">
             <span>Proceso de búsqueda ({events.length} pasos)</span>
-            {latency !== undefined && latency !== null && !isLoading && (
+            {typeof latency === "number" && !isLoading && (
               <span className="text-xs font-normal text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md animate-in fade-in">
-                {(latency / 1000).toFixed(2)}s
+                Tiempo total: {(latency / 1000).toFixed(2)}s
               </span>
             )}
           </div>

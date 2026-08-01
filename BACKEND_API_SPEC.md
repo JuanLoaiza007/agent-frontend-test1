@@ -41,6 +41,12 @@ GET /agent/v1/status-stream
 
 La conexión envía un evento `backend_status` al abrirse y un evento `heartbeat` cada 15 segundos. El frontend usa `EventSource`, reconexión controlada y un polling de respaldo sobre `/agent/v1/models` si el canal SSE falla o es bloqueado por el navegador.
 
+## 1.3 Métricas de ejecución
+
+Las duraciones visibles son calculadas exclusivamente por el backend. El frontend muestra `duration_ms` de `action_start` y `total_duration_ms` de `done`; no calcula tiempos usando la recepción de eventos SSE.
+
+Los eventos `action_start` y `action_complete` pueden incluir `duration_ms`, `occurrence` y `timing_source: "backend"`. El evento `done` incluye `total_duration_ms` y `timing_source: "backend"`. Si una métrica no está presente, la interfaz no debe mostrar `0 s` ni fabricar una duración local.
+
 ## 1. Endpoint Base
 
 | Configuración        | Valor                                                                |
