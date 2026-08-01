@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Search, Loader2, X } from "lucide-react";
 
@@ -10,6 +9,27 @@ import { Search, Loader2, X } from "lucide-react";
  */
 export function SearchBar({ onSearch, isLoading = false, disabled = false }) {
   const [query, setQuery] = useState("");
+  const textareaRef = useRef(null);
+  const MIN_TEXTAREA_HEIGHT = 48;
+  const MAX_TEXTAREA_HEIGHT = 80;
+
+  const resizeTextarea = (textarea) => {
+    if (!textarea) return;
+
+    textarea.style.height = "auto";
+    const contentHeight = textarea.scrollHeight;
+    const nextHeight = Math.min(
+      Math.max(contentHeight, MIN_TEXTAREA_HEIGHT),
+      MAX_TEXTAREA_HEIGHT,
+    );
+
+    textarea.style.height = `${nextHeight}px`;
+    textarea.style.overflowY = contentHeight > MAX_TEXTAREA_HEIGHT ? "auto" : "hidden";
+  };
+
+  useEffect(() => {
+    resizeTextarea(textareaRef.current);
+  }, [query]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +39,8 @@ export function SearchBar({ onSearch, isLoading = false, disabled = false }) {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       handleSubmit(e);
     }
   };
@@ -28,48 +49,54 @@ export function SearchBar({ onSearch, isLoading = false, disabled = false }) {
     setQuery("");
   };
 
+  const handleQueryChange = (event) => {
+    setQuery(event.target.value);
+    resizeTextarea(event.target);
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <form onSubmit={handleSubmit} className="relative w-full">
-        <div className="relative flex items-center">
-          {/* Botón buscar - izquierda */}
-          <Button
-            type="submit"
-            variant="ghost"
-            size="icon"
-            disabled={isLoading || disabled || !query.trim()}
-            className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 h-7 w-7 sm:h-8 sm:w-8 rounded-md bg-[#C8102E] text-white hover:bg-[#C8102E]/90 disabled:bg-transparent disabled:text-muted-foreground z-10 transition-colors"
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-            ) : (
-              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
-            )}
-          </Button>
-
-          <Input
-            type="text"
-            placeholder="Pregunta sobre matrícula, becas, servicios..."
+        <div className="relative overflow-hidden rounded-lg border-2 border-border bg-background shadow-sm transition-all focus-within:border-primary">
+          <textarea
+            id="agent-query"
+            ref={textareaRef}
+            rows={1}
+            placeholder="¿Cómo solicito una beca?"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={handleQueryChange}
             onKeyDown={handleKeyDown}
             disabled={isLoading || disabled}
-            className="pl-12 sm:pl-14 pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base rounded-lg border-2 border-border focus:border-primary shadow-sm transition-all bg-background"
+            aria-label="Pregunta para el agente"
+            className="block min-h-12 max-h-20 w-full resize-none overflow-y-hidden border-0 bg-transparent px-3 py-2 text-sm leading-6 outline-none sm:text-base disabled:cursor-not-allowed disabled:opacity-50"
           />
+        </div>
 
-          {/* Botón limpiar - derecha */}
-          {query && (
+        <div className="mt-2 flex items-center justify-end gap-2">
+          {query.trim() && (
             <Button
               type="button"
-              variant="ghost"
-              size="icon"
+              variant="outline"
               onClick={handleClear}
               disabled={isLoading || disabled}
-              className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-muted hover:bg-muted-foreground/20 text-muted-foreground hover:text-foreground transition-all z-10 flex items-center justify-center"
+              className="gap-2"
             >
-              <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <X className="h-4 w-4" />
+              Limpiar
             </Button>
           )}
+          <Button
+            type="submit"
+            disabled={isLoading || disabled || !query.trim()}
+            className="gap-2 bg-[#C8102E] text-white hover:bg-[#C8102E]/90"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Search className="h-4 w-4" />
+            )}
+            Buscar
+          </Button>
         </div>
       </form>
     </div>
