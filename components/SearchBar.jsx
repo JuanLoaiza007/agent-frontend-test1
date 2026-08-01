@@ -8,12 +8,12 @@ import { Search, Loader2, X } from "lucide-react";
 /**
  * SearchBar - Componente de buscador central
  */
-export function SearchBar({ onSearch, isLoading = false }) {
+export function SearchBar({ onSearch, isLoading = false, disabled = false }) {
   const [query, setQuery] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (query.trim() && onSearch) {
+    if (query.trim() && onSearch && !disabled) {
       onSearch(query.trim());
     }
   };
@@ -37,7 +37,7 @@ export function SearchBar({ onSearch, isLoading = false }) {
             type="submit"
             variant="ghost"
             size="icon"
-            disabled={isLoading || !query.trim()}
+            disabled={isLoading || disabled || !query.trim()}
             className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 h-7 w-7 sm:h-8 sm:w-8 rounded-md bg-[#C8102E] text-white hover:bg-[#C8102E]/90 disabled:bg-transparent disabled:text-muted-foreground z-10 transition-colors"
           >
             {isLoading ? (
@@ -53,7 +53,7 @@ export function SearchBar({ onSearch, isLoading = false }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             className="pl-12 sm:pl-14 pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base rounded-lg border-2 border-border focus:border-primary shadow-sm transition-all bg-background"
           />
 
@@ -64,7 +64,7 @@ export function SearchBar({ onSearch, isLoading = false }) {
               variant="ghost"
               size="icon"
               onClick={handleClear}
-              disabled={isLoading}
+              disabled={isLoading || disabled}
               className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-muted hover:bg-muted-foreground/20 text-muted-foreground hover:text-foreground transition-all z-10 flex items-center justify-center"
             >
               <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />

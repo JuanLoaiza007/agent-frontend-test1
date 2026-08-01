@@ -2,6 +2,35 @@
 
 Este documento define los requisitos que el backend debe cumplir para compatibilidad total con el frontend desarrollado en Next.js.
 
+## 1.1 Catálogo de modelos
+
+El frontend debe consultar el catálogo antes de permitir consultas:
+
+```http
+GET /agent/v1/models
+```
+
+Respuesta:
+
+```json
+{
+  "models": [
+    {
+      "name": "deepseek/deepseek-v3.2",
+      "label": "DeepSeek V3.2",
+      "default": true
+    },
+    {
+      "name": "openai/gpt-4o-mini",
+      "label": "OpenAI GPT-4o Mini",
+      "default": false
+    }
+  ]
+}
+```
+
+`name` es el identificador enviado al proveedor y `label` es el texto visible en la interfaz. `default` y `experimental` son opcionales y equivalen a `false` cuando se omiten. Debe existir exactamente un modelo con `default: true`. El backend siempre devuelve el catálogo completo; el frontend oculta los modelos con `experimental: true` hasta que el usuario activa la casilla correspondiente.
+
 ## 1. Endpoint Base
 
 | Configuración        | Valor                                                                |
@@ -18,7 +47,8 @@ El frontend envía una solicitud POST con el siguiente cuerpo:
 ```json
 {
   "question": "Texto de la pregunta del usuario",
-  "history": []
+  "history": [],
+  "model": "deepseek/deepseek-v3.2"
 }
 ```
 
@@ -26,6 +56,10 @@ El frontend envía una solicitud POST con el siguiente cuerpo:
 ```
 Content-Type: application/json
 ```
+
+`model` es obligatorio y debe pertenecer al catálogo retornado por `GET /agent/v1/models`.
+
+Si no pertenece al catálogo, el backend responde `400` con `detail.code` igual a `MODEL_NOT_ALLOWED`, además de `default_model` y el catálogo vigente.
 
 ## 3. Formato de Eventos SSE
 
@@ -127,6 +161,10 @@ Envío cuando el procesamiento del agente finaliza completamente.
 }
 ```
 
+### 3.5 Evento: `error`
+
+Si falla un modelo después de iniciado el stream, el backend emite un evento `error` y finaliza con un `done` cuyo `detected_domain` es `error`. Si falla antes del primer evento, puede reintentar con el modelo marcado como `default`.
+
 **Campos opcionales:**
 - `sources`: Array de fuentes utilizadas
 - `action_links`: Array de enlaces de acciones relacionadas
@@ -192,6 +230,8 @@ El frontend usa los siguientes pasos del Timeline:
 Si ocurre un error, el backend debe:
 - Enviar un evento `done` con `detected_domain: "error"`
 - O manejar el error mediante el flujo normal de eventos
+- Para `MODEL_NOT_ALLOWED`, el frontend selecciona el `default_model`, lo guarda y reintenta una sola vez.
+- El backend no acepta modelos fuera del catálogo.
 
 ### 6.3 Configuración de Puerto
 

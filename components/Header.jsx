@@ -4,16 +4,17 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Loader2 } from "lucide-react";
+import { Loader2, Settings } from "lucide-react";
 import { ENDPOINTS } from "@/lib/config";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { UI_CONFIG } from "@/lib/ui-config";
+import { Button } from "@/components/ui/button";
+import { SettingsDialog } from "@/components/SettingsDialog";
 
 /**
  * Header component - Fixed at the top with transparent background and blur
  */
 export function Header() {
   const [systemStatus, setSystemStatus] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     const fetchHealth = async () => {
@@ -70,10 +71,21 @@ export function Header() {
               )}
             </div>
             <Separator orientation="vertical" className="h-4" />
-            <ThemeSwitcher />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 sm:h-9 sm:w-9 md:h-10 md:w-10"
+              onClick={() => setSettingsOpen(true)}
+              aria-label="Abrir configuración"
+            >
+              <Settings className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">Abrir configuración</span>
+            </Button>
           </div>
         </div>
       </div>
+      <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
     </header>
   );
 }

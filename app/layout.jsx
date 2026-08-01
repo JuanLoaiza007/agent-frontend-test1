@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ModelProvider } from "@/components/ModelProvider";
 import { icons } from "lucide-react";
 
 const geistSans = Geist({
@@ -46,12 +47,14 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
-          <main className="flex w-full h-full overflow-hidden">
-            <AnimatedBackground />
-            <div className="flex flex-1 overflow-y-auto">{children}</div>
-          </main>
-          <Footer />
+          <ModelProvider>
+            <Header />
+            <main className="flex w-full h-full overflow-hidden">
+              <AnimatedBackground />
+              <div className="flex flex-1 overflow-y-auto">{children}</div>
+            </main>
+            <Footer />
+          </ModelProvider>
         </ThemeProvider>
       </body>
     </html>
