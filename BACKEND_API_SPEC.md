@@ -31,6 +31,16 @@ Respuesta:
 
 `name` es el identificador enviado al proveedor y `label` es el texto visible en la interfaz. `default` y `experimental` son opcionales y equivalen a `false` cuando se omiten. Debe existir exactamente un modelo con `default: true`. El backend siempre devuelve el catálogo completo; el frontend oculta los modelos con `experimental: true` hasta que el usuario activa la casilla correspondiente.
 
+## 1.2 Estado persistente del backend
+
+El frontend mantiene una conexión SSE para conocer la disponibilidad de la API:
+
+```http
+GET /agent/v1/status-stream
+```
+
+La conexión envía un evento `backend_status` al abrirse y un evento `heartbeat` cada 15 segundos. El frontend usa `EventSource`, reconexión controlada y un polling de respaldo sobre `/agent/v1/models` si el canal SSE falla o es bloqueado por el navegador.
+
 ## 1. Endpoint Base
 
 | Configuración        | Valor                                                                |
