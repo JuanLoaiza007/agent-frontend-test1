@@ -28,7 +28,31 @@ import {
  * Timeline - Componente que muestra el proceso de búsqueda del agente
  */
 
-const REVERSE_ORDER = false;
+const REVERSE_ORDER = true;
+
+function TimelineBoundary({ label }) {
+  return (
+    <div className="flex items-center gap-3 py-2 text-xs text-muted-foreground">
+      <div className="h-px flex-1 bg-border/60" />
+      <span className="whitespace-nowrap">{label}</span>
+      <div className="h-px flex-1 bg-border/60" />
+    </div>
+  );
+}
+
+function getBoundaryLabels(isTruncated) {
+  if (REVERSE_ORDER) {
+    return {
+      top: "Fin de la consulta",
+      bottom: isTruncated ? "Más eventos anteriores..." : "Inicio de la consulta",
+    };
+  }
+
+  return {
+    top: "Inicio de la consulta",
+    bottom: isTruncated ? "Más eventos posteriores..." : "Fin de la consulta",
+  };
+}
 
 const STEP_ICONS = {
   planning: Search,
@@ -178,13 +202,15 @@ export function Timeline({
     return null;
   }
 
-  let displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
-  displayEvents = displayEvents.slice(0, maxEvents);
+  const orderedEvents = REVERSE_ORDER ? [...events].reverse() : [...events];
+  const isTruncated = Number.isFinite(maxEvents) && orderedEvents.length > maxEvents;
+  const displayEvents = orderedEvents.slice(0, maxEvents);
+  const boundaryLabels = getBoundaryLabels(isTruncated);
 
   return (
     <Card className={`w-full h-full flex flex-col ${className || ""}`}>
       <CardHeader className="px-3 sm:px-4 mb-0 pb-2">
-        <CardTitle className="text-sm sm:text-base flex items-center justify-between">
+        <CardTitle className="text-sm sm:text-base flex items-center justify-between gap-2">
           <span>Proceso de búsqueda</span>
           {latency !== undefined && latency !== null && !isLoading && (
             <span className="text-xs font-normal text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md animate-in fade-in">
@@ -195,6 +221,7 @@ export function Timeline({
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto px-2 sm:px-3 md:px-4 min-h-0">
         <div className="relative">
+          <TimelineBoundary label={boundaryLabels.top} />
           {displayEvents.map((event, index) => (
             <TimelineItem
               key={`${event.step}-${index}`}
@@ -202,6 +229,7 @@ export function Timeline({
               isLast={index === displayEvents.length - 1}
             />
           ))}
+          <TimelineBoundary label={boundaryLabels.bottom} />
         </div>
       </CardContent>
     </Card>
@@ -232,7 +260,8 @@ export function TimelineAccordion({ events = [], isLoading = false, latency }) {
     return null;
   }
 
-  const displayEvents = REVERSE_ORDER ? [...events].reverse() : events;
+  const orderedEvents = REVERSE_ORDER ? [...events].reverse() : [...events];
+  const boundaryLabels = getBoundaryLabels(false);
 
   return (
     <Accordion type="single" collapsible defaultValue="timeline">
@@ -249,13 +278,15 @@ export function TimelineAccordion({ events = [], isLoading = false, latency }) {
         </AccordionTrigger>
         <AccordionContent>
           <div className="relative">
-            {displayEvents.map((event, index) => (
+            <TimelineBoundary label={boundaryLabels.top} />
+            {orderedEvents.map((event, index) => (
               <TimelineItem
                 key={`${event.step}-${index}`}
                 event={event}
-                isLast={index === displayEvents.length - 1}
+                isLast={index === orderedEvents.length - 1}
               />
             ))}
+            <TimelineBoundary label={boundaryLabels.bottom} />
           </div>
         </AccordionContent>
       </AccordionItem>
