@@ -77,7 +77,9 @@ export default function Home() {
                 className="sm:col-span-1 max-h-45 md:max-h-50 lg:max-h-60"
                 events={timelineEvents}
                 isLoading={isLoading && timelineEvents.length === 0}
+                isProcessing={isLoading}
                 latency={latency}
+                isComplete={Boolean(response) && !isLoading}
               />
             )}
             <ResponseCard

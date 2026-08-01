@@ -40,17 +40,39 @@ function TimelineBoundary({ label }) {
   );
 }
 
-function getBoundaryLabels(isTruncated) {
+function TimelinePending({ isLast }) {
+  return (
+    <div className="flex items-start gap-3 pb-4" role="status" aria-live="polite">
+      <div className="flex flex-col items-center">
+        <div className="flex h-6 items-center gap-1 rounded-full p-1 text-primary">
+          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
+          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
+          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
+        </div>
+        {!isLast && <div className="w-px h-full bg-border min-h-4" />}
+      </div>
+      <div className="flex-1 pb-2 pt-1">
+        <span className="sr-only">La consulta continúa en proceso</span>
+      </div>
+    </div>
+  );
+}
+
+function getBoundaryLabels(isTruncated, isComplete) {
   if (REVERSE_ORDER) {
     return {
-      top: "Fin de la consulta",
+      top: isComplete ? "Fin de la consulta" : null,
       bottom: isTruncated ? "Más eventos anteriores..." : "Inicio de la consulta",
     };
   }
 
   return {
     top: "Inicio de la consulta",
-    bottom: isTruncated ? "Más eventos posteriores..." : "Fin de la consulta",
+    bottom: isTruncated
+      ? "Más eventos posteriores..."
+      : isComplete
+        ? "Fin de la consulta"
+        : null,
   };
 }
 
@@ -184,6 +206,8 @@ export function Timeline({
   className,
   maxEvents = Infinity,
   latency,
+  isComplete = false,
+  isProcessing = false,
 }) {
   if (isLoading) {
     return (
@@ -205,7 +229,7 @@ export function Timeline({
   const orderedEvents = REVERSE_ORDER ? [...events].reverse() : [...events];
   const isTruncated = Number.isFinite(maxEvents) && orderedEvents.length > maxEvents;
   const displayEvents = orderedEvents.slice(0, maxEvents);
-  const boundaryLabels = getBoundaryLabels(isTruncated);
+  const boundaryLabels = getBoundaryLabels(isTruncated, isComplete);
 
   return (
     <Card className={`w-full h-full flex flex-col ${className || ""}`}>
@@ -221,7 +245,10 @@ export function Timeline({
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto px-2 sm:px-3 md:px-4 min-h-0">
         <div className="relative">
-          <TimelineBoundary label={boundaryLabels.top} />
+          {boundaryLabels.top && <TimelineBoundary label={boundaryLabels.top} />}
+          {REVERSE_ORDER && isProcessing && displayEvents.length > 0 && (
+            <TimelinePending isLast={false} />
+          )}
           {displayEvents.map((event, index) => (
             <TimelineItem
               key={`${event.step}-${index}`}
@@ -229,7 +256,10 @@ export function Timeline({
               isLast={index === displayEvents.length - 1}
             />
           ))}
-          <TimelineBoundary label={boundaryLabels.bottom} />
+          {!REVERSE_ORDER && isProcessing && displayEvents.length > 0 && (
+            <TimelinePending isLast />
+          )}
+          {boundaryLabels.bottom && <TimelineBoundary label={boundaryLabels.bottom} />}
         </div>
       </CardContent>
     </Card>
@@ -240,7 +270,13 @@ export function Timeline({
  * TimelineAccordion - Versión en acordeón del timeline
  * Para usar cuando se quiere colapsar el timeline
  */
-export function TimelineAccordion({ events = [], isLoading = false, latency }) {
+export function TimelineAccordion({
+  events = [],
+  isLoading = false,
+  latency,
+  isComplete = false,
+  isProcessing = false,
+}) {
   if (isLoading) {
     return (
       <Accordion type="single" collapsible defaultValue="timeline">
@@ -261,7 +297,7 @@ export function TimelineAccordion({ events = [], isLoading = false, latency }) {
   }
 
   const orderedEvents = REVERSE_ORDER ? [...events].reverse() : [...events];
-  const boundaryLabels = getBoundaryLabels(false);
+  const boundaryLabels = getBoundaryLabels(false, isComplete);
 
   return (
     <Accordion type="single" collapsible defaultValue="timeline">
@@ -278,7 +314,10 @@ export function TimelineAccordion({ events = [], isLoading = false, latency }) {
         </AccordionTrigger>
         <AccordionContent>
           <div className="relative">
-            <TimelineBoundary label={boundaryLabels.top} />
+            {boundaryLabels.top && <TimelineBoundary label={boundaryLabels.top} />}
+            {REVERSE_ORDER && isProcessing && orderedEvents.length > 0 && (
+              <TimelinePending isLast={false} />
+            )}
             {orderedEvents.map((event, index) => (
               <TimelineItem
                 key={`${event.step}-${index}`}
@@ -286,7 +325,10 @@ export function TimelineAccordion({ events = [], isLoading = false, latency }) {
                 isLast={index === orderedEvents.length - 1}
               />
             ))}
-            <TimelineBoundary label={boundaryLabels.bottom} />
+            {!REVERSE_ORDER && isProcessing && orderedEvents.length > 0 && (
+              <TimelinePending isLast />
+            )}
+            {boundaryLabels.bottom && <TimelineBoundary label={boundaryLabels.bottom} />}
           </div>
         </AccordionContent>
       </AccordionItem>
